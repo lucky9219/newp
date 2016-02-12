@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{%block content%}
+
+{%if top%}
+{%for var in top%}
+<header class="intro-header" style="background-image: url('{{LINK}}img/uploads/a.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h2 STYLE=" color: #F5F5F5;font-size:50px"> {{var.title}}</h2>
+                        <hr class="small">
+                        <span class="subheading" STYLE="font-size:21px">{{var.content}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{%endfor%}
+{%endif%}
+
+
+
+
+{%if new_s %}
+{%for var in new_s %}
+<div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-preview">
+                    <h2 class="post-title">
+                           {{var.title}}
+                        </h2>
+                     
+                        <h3 class="post-subtitle">
+                            {{var.content}}
+                        </h3>
+                    </a>
+                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2014</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endfor%}
+{%endif%}
+{%endblock%}

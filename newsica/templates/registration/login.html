@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{%block title%}User Login{%endblock%}
+{%block head %}User Login{%endblock%} 
+
+{% block content %}
+	<header class="intro-header" style="background-image: url('{{LINK}}img/uploads/d.jpg');filter:alpha(opacity=40);">            
+	<form  style="text-align:center;" class="form-signup" action="." method="post">
+	 <br>
+	 {% if form.errors %}
+		<p>Either your username password didn't match Or you are not registered</p>
+	{% endif %}
+	 {% csrf_token %}
+	 <br>
+	 <br>
+
+	<p><label for="id_username">Username:</label>
+	{{form.username}}</p>
+	<p><label for="id_password">Password:</label>
+	{{form.password}}</p>
+	<input type="hidden" name="next" value="/"/>
+	<input type="submit"  value="Signin"><br><a href="/signup">Signup</a>
+	</form>
+{%endblock%}
+
+
