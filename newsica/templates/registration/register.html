@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {%block title%}SignUp{%endblock%}
 {% block content %}
-<header class="intro-header" style="background-image: url('{{LINK}}img/uploads/g.jpg')">            
-<br>
-<br>
-
-<p>
+<form  style="text-align:center;" class="form-signup" action="." method="post">
+{% csrf_token %}
+    <br><br>
+    <h2>Create your account</h2>
+ <p>
 {% if messages %}
 <ul class="a">
 {% for message in messages %}
@@ -15,11 +15,6 @@
 {% endif %}
 </p>
 
-<form  style="text-align:center;" class="form-signup" action="." method="post">
-{% csrf_token %}
-    <br>
-    <br>
-    <h2>Create your account</h2>
     <div class="fieldWrapper">
         <label>First name</label><br>
         {{ form.first_name }}
@@ -54,6 +49,20 @@
     </div>            
     <br></br>
     <input type="submit" name="submit" class="btn btn-primary" value="Create account">
+   <br>
+
+  
+   <h5>Or sign in using</h5>
+   <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
+                                <span class="fa-stack fa-lg">
+                                   
+                                    <i class="fa fa-google" style="font-size:68px;"></i>
+
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+</a>
+
+
 </form>
 {%endblock%}
 

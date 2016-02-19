@@ -25,3 +25,15 @@ class UserProfile(models.Model):
     def __str__(self):
        return self.user.username
 
+
+
+class user_news(models.Model):
+	title=models.CharField(max_length=100)
+	content=models.TextField(max_length=2000)
+	user=models.ForeignKey(User,default='luck')
+	def __unicode__(self):
+		return "%s %s" %(self.user,self.title)
+
+class Tag(models.Model):
+	name=models.CharField(max_length=50)
+	news=models.ManyToManyField(user_news)	

@@ -11,14 +11,15 @@ import hashlib, datetime, random
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+        
 
 def main_page(request):
 	new_s=news.objects.all()
 	top=top_n.objects.all()
 	variables = RequestContext(request, {
     'new_s': new_s,
-    'top':top
+    'top':top,
+    'user':request.user
   	})
 	return render_to_response('main_page.html', variables)
 
@@ -53,10 +54,10 @@ def register_user(request):
             try:
             	send_mail(email_subject, email_body, 'myemail@example.com',
                 [email], fail_silently=False)
-                messages.add_message(request, messages.INFO, "Invitation successfully sent")
+                messages.add_message(request, messages.INFO, "Verification mail sent successfully to provided email")
                 return HttpResponseRedirect('/registration/register_success')
             except:
-            	messages.add_message(request, messages.INFO, "Invitation not send successfully.Try again later")
+            	messages.add_message(request, messages.INFO, "Unable to send verification email!!Please check your network and emailid.")
     else:
         args['form'] = RegistrationForm()
 
@@ -95,3 +96,59 @@ def logout_page(request):
 @login_required
 def user_page(request):
 	return HttpResponseRedirect('/')
+
+# @login_required
+# def save_news_page(request):
+#   if request.method == 'POST':
+#     form = save_news(request.POST)
+#     if form.is_valid():
+#         tag=Tag.objects.get_or_create(name=form.cleaned_data['tags'])
+#         user_news_obj=user_news.objects.get_or_create(user=request.user)
+#         user_news_obj.title=form.cleaned_data['title']
+#         user_news_obj.content=form.cleaned_data['content']
+        
+#         user_news_obj.save()
+#         tag.save()
+
+#       #Create or get link.
+     
+#     return HttpResponseRedirect(
+#        '/'
+#      )
+#   else:
+#     form = save_news()
+#   variables = RequestContext(request, {'form': form})
+#   return render_to_response('save_news.html', variables)
+
+@login_required
+def save_news_page(request):
+  if request.method == 'POST':
+    form = save_news(request.POST)
+    if form.is_valid():
+      # Create or get link.
+    # link, dummy = Link.objects.get_or_create(url=form.clean_data['url'])
+     # Create or get bookmark.
+     obj, created = user_news.objects.get_or_create(user=request.user)
+     # Update bookmark title.
+
+     obj.title = form.cleaned_data['title']
+     obj.content=form.cleaned_data['content']
+     tag_names=form.cleaned_data['tags']
+     # If the bookmark is being updated, clear old tag list.
+     # if not created:
+     #   obj.tag_set.clear()
+     # Create new tag list.
+
+     for tag_name in tag_names:
+        tag, dummy = Tag.objects.get_or_create(name=tag_name)
+        obj.tag_set.add(tag)
+     # Save bookmark to database.
+     obj.save()
+
+     return HttpResponseRedirect('/'
+       #'/user/%s/' % request.user.username
+     )
+  else:
+    form = save_news()
+  variables = RequestContext(request, {'form': form})
+  return render_to_response('save_news.html', variables)

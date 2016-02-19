@@ -5,3 +5,5 @@ from .models import *
 admin.site.register(news)
 admin.site.register(top_n)
 admin.site.register(UserProfile)
+admin.site.register(user_news)
+admin.site.register(Tag)

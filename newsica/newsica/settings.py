@@ -39,10 +39,17 @@ INSTALLED_APPS = (
     'new_app',
     'haystack',
     'whoosh',
+    'social.apps.django_app.default'
+
 
 )
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET='TpG2GzjFT6m1c7yvk4h0RjXU'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='990997027970-njtre96om04uba2vljmq6m6qjrr4kbfs'
 
-
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend'
+    )
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -88,25 +95,25 @@ WSGI_APPLICATION = 'newsica.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'newsica',
         'USER': 'admin',
-        'PASSWORD': 'mp92',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '',
     }
 }
-'''
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Internationalization

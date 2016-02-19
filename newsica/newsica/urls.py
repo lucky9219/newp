@@ -15,5 +15,6 @@ url(r'^search/', include('haystack.urls')),
         url(r'^user/$','new_app.views.user_page',),
      url(r'^accounts/confirm/(?P<activation_key>\w+)/','new_app.views.register_confirm'),
      url(r'^registration/register_success',TemplateView.as_view(template_name="registration/register_success.html")),
-  
+     url('', include('social.apps.django_app.urls', namespace='social')),
+  url(r'^save/$','new_app.views.save_news_page',)
 ]

@@ -24,3 +24,21 @@ class RegistrationForm(UserCreationForm):
         	user.save()
 
     	return user
+
+
+
+class save_news(forms.Form):
+    title=forms.CharField(
+        label='title',
+        widget=forms.TextInput(attrs={'size':64},
+            )
+        )
+    content=forms.CharField(
+        label='news',
+        widget=forms.Textarea(attrs={'size':64})
+        )
+    tags=forms.CharField(
+        label='TAGS',
+        required=True,
+        widget=forms.TextInput(attrs={'size':64})
+        )
