@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{%block content%}
+<br>
+<br>
+{%if var %}
+<ul>
+<li><a href="/search">Search News</a></li>
+<li><a href="/save">Save   News</a></li><br>
+</ul>
+{%for vars in var %}
+<div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-preview">
+                    <h2 class="post-title">
+                           {{vars.title}}
+                        </h2>
+                     
+                        <h3 class="post-subtitle">
+                            {{vars.content}}
+                        </h3>
+                    </a>
+                    <p class="post-meta">Posted by <a href="#">{{user}} </a>{{ time}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endfor%}
+{%endif%}
+{%endblock%}

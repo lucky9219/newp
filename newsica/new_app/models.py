@@ -30,7 +30,7 @@ class UserProfile(models.Model):
 class user_news(models.Model):
 	title=models.CharField(max_length=100)
 	content=models.TextField(max_length=2000)
-	user=models.ForeignKey(User,default='luck')
+	user=models.ForeignKey(User)
 	def __unicode__(self):
 		return "%s %s" %(self.user,self.title)
 

@@ -24,6 +24,11 @@ def main_page(request):
 	return render_to_response('main_page.html', variables)
 
 def register_user(request):
+  if User.is_authenticated:
+      return HttpResponseRedirect('/'
+       #'/user/%s/' % request.user.username
+     )
+  else:  
     args = {}
     args.update(csrf(request))
     if request.method == 'POST':
@@ -97,46 +102,22 @@ def logout_page(request):
 def user_page(request):
 	return HttpResponseRedirect('/')
 
-# @login_required
-# def save_news_page(request):
-#   if request.method == 'POST':
-#     form = save_news(request.POST)
-#     if form.is_valid():
-#         tag=Tag.objects.get_or_create(name=form.cleaned_data['tags'])
-#         user_news_obj=user_news.objects.get_or_create(user=request.user)
-#         user_news_obj.title=form.cleaned_data['title']
-#         user_news_obj.content=form.cleaned_data['content']
-        
-#         user_news_obj.save()
-#         tag.save()
-
-#       #Create or get link.
-     
-#     return HttpResponseRedirect(
-#        '/'
-#      )
-#   else:
-#     form = save_news()
-#   variables = RequestContext(request, {'form': form})
-#   return render_to_response('save_news.html', variables)
 
 @login_required
 def save_news_page(request):
   if request.method == 'POST':
     form = save_news(request.POST)
     if form.is_valid():
+
       # Create or get link.
     # link, dummy = Link.objects.get_or_create(url=form.clean_data['url'])
      # Create or get bookmark.
-     obj, created = user_news.objects.get_or_create(user=request.user)
+     obj, created = user_news.objects.get_or_create(user=request.user,title=form.cleaned_data['title'],content=form.cleaned_data['content'])
      # Update bookmark title.
-
-     obj.title = form.cleaned_data['title']
-     obj.content=form.cleaned_data['content']
      tag_names=form.cleaned_data['tags']
      # If the bookmark is being updated, clear old tag list.
-     # if not created:
-     #   obj.tag_set.clear()
+     if not created:
+        obj.tag_set.clear()
      # Create new tag list.
 
      for tag_name in tag_names:
@@ -152,3 +133,11 @@ def save_news_page(request):
     form = save_news()
   variables = RequestContext(request, {'form': form})
   return render_to_response('save_news.html', variables)
+@login_required
+def user_page(request):
+    var=user_news.objects.all()
+    time=timezone.now()
+    user=request.user.username
+    variables=RequestContext(request,{'var':var,'user':user,'time':time})
+    return render_to_response('user_page.html',variables)
+
