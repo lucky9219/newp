@@ -4,6 +4,7 @@ from django.contrib import auth
 from django.contrib.auth import authenticate,login,logout
 from django.core.context_processors import csrf
 from forms import *
+from django.db.models.query_utils import Q
 from models import *
 from django.template import RequestContext
 from django.core.mail import send_mail
@@ -11,7 +12,15 @@ import hashlib, datetime, random
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-        
+from django.contrib.auth.views import password_reset      
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from django.template import loader
+from django.views.generic import *
+from django.contrib.auth import get_user_model
 
 def main_page(request):
 	new_s=news.objects.all()
@@ -24,7 +33,7 @@ def main_page(request):
 	return render_to_response('main_page.html', variables)
 
 def register_user(request):
-  if User.is_authenticated:
+  if request.user.is_active:
       return HttpResponseRedirect('/'
        #'/user/%s/' % request.user.username
      )
@@ -99,20 +108,20 @@ def logout_page(request):
 
 
 @login_required
-def user_page(request):
-	return HttpResponseRedirect('/')
-
+def about(request):
+  return render_to_response('about.html')
 
 @login_required
 def save_news_page(request):
   if request.method == 'POST':
-    form = save_news(request.POST)
+    form = save_news(request.POST,request.FILES)
     if form.is_valid():
-
-      # Create or get link.
-    # link, dummy = Link.objects.get_or_create(url=form.clean_data['url'])
-     # Create or get bookmark.
-     obj, created = user_news.objects.get_or_create(user=request.user,title=form.cleaned_data['title'],content=form.cleaned_data['content'])
+     if 'image' in request.FILES:
+      obj, created = user_news.objects.get_or_create(
+      user=request.user,title=form.cleaned_data['title'],content=form.cleaned_data['content'],upload=request.FILES['image'])
+     else:
+      obj, created = user_news.objects.get_or_create(
+      user=request.user,title=form.cleaned_data['title'],content=form.cleaned_data['content'])
      # Update bookmark title.
      tag_names=form.cleaned_data['tags']
      # If the bookmark is being updated, clear old tag list.
@@ -137,7 +146,85 @@ def save_news_page(request):
 def user_page(request):
     var=user_news.objects.all()
     time=timezone.now()
-    user=request.user.username
+    user=request.user
     variables=RequestContext(request,{'var':var,'user':user,'time':time})
     return render_to_response('user_page.html',variables)
+
+
+class ResetPasswordRequestView(FormView):
+        template_name = "registration/password_reset_form.html"
+        form_class = PasswordResetRequestForm
+        @staticmethod
+        def validate_email_address(email):
+            try:
+                validate_email(email)
+                return True
+            except ValidationError:
+                return False
+        def post(self, request, *args, **kwargs):
+            form = self.form_class(request.POST)
+            if form.is_valid():
+             data= form.cleaned_data["email"]
+             if self.validate_email_address(data) is True:            
+                associated_users= User.objects.filter(Q(email=data)|Q(username=data))
+                if associated_users.exists():
+                    for user in associated_users:
+                            c = {
+                                'email': user.email,
+                                'domain': request.META['HTTP_HOST'],
+                                'site_name': 'your site',
+                                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                                'user': user,
+                                'token': default_token_generator.make_token(user),
+                                'protocol': 'http',
+                                }
+                            subject_template_name='registration/password_reset_subject.txt' 
+                            # copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
+                            email_template_name='registration/password_reset_email.html'    
+                            # copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
+                            subject = loader.render_to_string(subject_template_name, c)
+                            # Email subject *must not* contain newlines
+                            subject = ''.join(subject.splitlines())
+                            email = loader.render_to_string(email_template_name, c)
+                            try:
+                              send_mail(subject, email, 'myemail@example.com' , [user.email], fail_silently=False)
+                              messages.success(request, 'An email has been sent to ' + data +". Please check its inbox to continue reseting password.")
+                              return HttpResponseRedirect('/reset/done/')  
+                            except:
+                              messages.error(request, 'check your network connectivity Or')  
+                              break    
+             messages.error(request, 'Check The email address address you entered')
+             return render_to_response('registration/password_reset_error.html',context_instance=RequestContext(request))
+
+class PasswordResetConfirmView(FormView):
+    template_name = "registration/password_reset_confirm.html"
+    form_class = SetPasswordForm
+
+    def post(self, request, uidb64=None, token=None, *arg, **kwargs):
+        """
+        View that checks the hash in a password reset link and presents a
+        form for entering a new password.
+        """
+        UserModel = get_user_model()
+        form = self.form_class(request.POST)
+        assert uidb64 is not None and token is not None  # checked by URLconf
+        try:
+            uid = urlsafe_base64_decode(uidb64)
+            user = UserModel._default_manager.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            if form.is_valid():
+                new_password= form.cleaned_data['new_password2']
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, 'Password has been reset.')
+                return HttpResponseRedirect('/login')
+            else:
+                messages.error(request, 'Password reset has not been unsuccessful.Try again')
+                return HttpResponseRedirect('/reset')
+        else:
+            messages.error(request,'The reset password link is no longer valid.Try again')
+            return HttpResponseRedirect('/reset')
 

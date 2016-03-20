@@ -3,9 +3,18 @@
 {%block head %}User Login{%endblock%} 
 
 {% block content %}
-	<header class="intro-header" style="background-image: url('{{LINK}}img/uploads/d.jpg');filter:alpha(opacity=40);">            
+<!--	<header class="intro-header" style="background-image: url('{{LINK}}img/uploads/d.jpg');filter:alpha(opacity=40);">            -->
 	<form  style="text-align:center;" class="form-signup" action="." method="post">
 	 <br>
+	 <p>
+{% if messages %}
+<ul class="a">
+{% for message in messages %}
+<li>{{ message }}</li>
+{% endfor %}
+ </ul>
+{% endif %}
+</p>
 	 {% if form.errors %}
 		<p>Either your username password didn't match Or you are not registered</p>
 	{% endif %}
@@ -18,8 +27,15 @@
 	<p><label for="id_password">Password:</label>
 	{{form.password}}</p>
 	<input type="hidden" name="next" value="/"/>
-	<input type="submit"  value="Signin"><br><a href="/signup">Signup</a>
-	</form>
+	<input type="submit"  value="Signin"><br>
+<a href="/signup">Signup</a><br>
+{%if user.is_authenticated%}
+	<a href="/reset">Reset your password</a>
+{%else%}
+<a href="/reset">Forget your password</a>
+{%endif%}
+</form>
+
 {%endblock%}
 
 

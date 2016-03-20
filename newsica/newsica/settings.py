@@ -39,9 +39,7 @@ INSTALLED_APPS = (
     'new_app',
     'haystack',
     'whoosh',
-    'social.apps.django_app.default'
-
-
+    'social.apps.django_app.default',
 )
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET='TpG2GzjFT6m1c7yvk4h0RjXU'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='990997027970-njtre96om04uba2vljmq6m6qjrr4kbfs'
@@ -132,6 +130,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
+
+
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'moviemania766@gmail.com'
@@ -139,4 +140,6 @@ EMAIL_HOST_PASSWORD = 'Django92lucky'
 EMAIL_PORT = 587
 
 STATIC_URL = '/static/'
+MEDIA_ROOT=  '/home/lucky/github/np/newp/newsica/static/img/usruploads'
+MEDIA_URL='/media/'
 STATICFILES_DIRS=[BASE_DIR+"/static/"]
