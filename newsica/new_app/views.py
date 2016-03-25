@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse,Http404
 from django.contrib import auth
 from django.contrib.auth import authenticate,login,logout
 from django.core.context_processors import csrf
@@ -143,11 +143,10 @@ def save_news_page(request):
   variables = RequestContext(request, {'form': form})
   return render_to_response('save_news.html', variables)
 @login_required
-def user_page(request):
+def newss(request):
     var=user_news.objects.all()
     time=timezone.now()
-    user=request.user
-    variables=RequestContext(request,{'var':var,'user':user,'time':time})
+    variables=RequestContext(request,{'var':var,'time':time})
     return render_to_response('user_page.html',variables)
 
 
@@ -227,4 +226,41 @@ class PasswordResetConfirmView(FormView):
         else:
             messages.error(request,'The reset password link is no longer valid.Try again')
             return HttpResponseRedirect('/reset')
+
+@login_required
+def my_page(request):
+    var=user_news.objects.filter(user=request.user)
+    time=timezone.now()
+    variables=RequestContext(request,{'var':var,'time':time})
+    return render_to_response('user_page.html',variables)
+
+
+def user1(request,username):
+  try:
+    user=User.objects.get(username=username)
+  except:
+    raise Http404('Requested user not found')
+  time=timezone.now()
+  var=user.user_news_set.all()
+  variables=RequestContext(request,{'var':var,'time':time,'user':username})
+  return render_to_response('user1.html',variables)
+
+def dis(request,id):
+  try:
+    var=news.objects.get(id=id)
+  except:
+    raise Http404('Requested news not found')
+  time=timezone.now()
+  variables=RequestContext(request,{'var':var,'time':time})
+  return render_to_response('dis.html',variables)
+
+def dis_user(request,id):
+  try:
+    var=user_news.objects.get(id=id)
+  except:
+    raise Http404('Requested news not found')
+  time=timezone.now()
+  variables=RequestContext(request,{'var':var,'time':time})
+  return render_to_response('dis1.html',variables)
+
 

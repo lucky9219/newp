@@ -9,7 +9,8 @@ class news(models.Model):
 	def __unicode__(self):
 		return self.title
 	def get_absolute_url(self):
-		return "/news/get/%i/" % self.id
+		return '/%d/' % self.id
+
 
 class top_n(models.Model):
 	title=models.CharField(max_length=100)
@@ -41,6 +42,8 @@ class user_news(models.Model):
 	upload=models.FileField(upload_to='static/img/usruploads/',)
 	def __unicode__(self):
 		return "%s %s" %(self.user,self.title)
+	def get_absolute_url(self):
+		return '/%d/' % self.id
 
 class Tag(models.Model):
 	name=models.CharField(max_length=50)

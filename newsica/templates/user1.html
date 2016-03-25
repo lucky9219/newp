@@ -7,29 +7,25 @@
 <br>
 <br>
 <ul>
-<li><a href="/search">Search News</a></li>
-<li><a href="/save">Save   News</a></li><br>
 </ul>
 {%if var %}
 {%for vars in var %}
-<div class="w3-container">
+<div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-preview">
                     <h2 class="post-title">
-                        <ul class="w3-ul w3-card-4" style="width:100%">
-                         <li>  <a href="/dis{{vars.get_absolute_url}}">{{vars.title}}</a></li>
+                           {{vars.title}}
                         </h2>
-                     
-                       <!--  <h3 class="post-subtitle">
+                        <h3 class="post-subtitle">
                            {%if vars.upload %}
                             <a  href="{{ vars.upload.url }}" ><img src="{{ vars.upload.url }}" class="img-thumbnail" width="304" height="236"></a>
                             {%endif%}
                             {{vars.content}}
                         </h3>
-                    </a> -->
+                    </a>
 
-                    <p class="post-meta">Posted by <a href="/user/{{vars.user}}/">{{vars.user}} </a>{{ time}}</p>
+                    <p class="post-meta">Posted by <a href="/user">{{vars.user}} </a>{{ time}}</p>
                     
                 </div>
             </div>

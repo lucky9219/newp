@@ -17,6 +17,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="{{LINK}}css/bootstrap.min.css" rel="stylesheet">
+ <link href="{{LINK}}css/w3.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="{{LINK}}css/clean-blog.min.css" rel="stylesheet">
@@ -65,14 +66,22 @@
                     
 
                 {%if user.is_authenticated%}
+
                     <li>
-                        <a href="/">Home</a>
+
+                        <a  href="/">Trending</a>
                     </li>
+
+                    <li class="w3-dropdown-hover">
+                     <a href="/mp">{{user.get_full_name|default:user.username }}</a>
+                    <div class="w3-dropdown-content w3-white w3-card-4">
+                     
+                     <a href="/mp" style="color:rgb(35,47,62)">My page</a>
+                     <a href="#" style="color:rgb(35,47,62)">Profile</a>
+                    <a href="/logout" style="color:rgb(35,47,62)">Logout</a>
+                    </div>
                     <li>
-                        <a href="/logout">Signout</a>
-                    </li>
-                    <li>
-                        <a href="/user">{{user.get_full_name|default:user.username }}</a>
+                        <a href="/news">news</a>
                     </li>
                     <li>
                         <a href="contact.html">Contact</a>

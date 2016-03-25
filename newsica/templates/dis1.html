@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{%block content%}
+<style>
+</style>
+<br>
+<br>
+<ul>
+<li><a href="/search">Search News</a></li>
+<li><a href="/save">Save   News</a></li><br>
+</ul>
+{%if var %}
+<div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-preview">
+                    <h2 class="post-title">
+                        <div class="w3-container w3-light-grey w3-border">
+                           <a href="/dis{{vars.get_absolute_url}}">{{var.title}}</a>
+                       </div>
+                        </h2>
+                     
+                        <h3 class="post-subtitle">
+                           {%if var.upload %}
+                            <a  href="{{ var.upload.url }}" ><img src="{{ var.upload.url }}" class="img-thumbnail" width="304" height="236"></a>
+                            {%endif%}
+                            {{var.content}}
+                        </h3>
+                    </a>
+
+                    <p class="post-meta">Posted by <a href="/user/{{var.user}}/">{{var.user}} </a>{{ time}}</p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+{%endif%}
+{%endblock%}
