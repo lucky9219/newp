@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import os.path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+SITE_ID=1
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -39,10 +39,15 @@ INSTALLED_APPS = (
     'new_app',
     'haystack',
     'whoosh',
+    'disqus',
+    'django.contrib.sites',
     'social.apps.django_app.default',
 )
+DISQUS_API_KEY = 'bl10nkOgzB43y5RcGu3dJqBwa0rHHWoW4ioVoFH39DNgbvRK95iCjyz5uaVpNaoM'
+DISQUS_WEBSITE_SHORTNAME = 'newsica'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET='TpG2GzjFT6m1c7yvk4h0RjXU'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='990997027970-njtre96om04uba2vljmq6m6qjrr4kbfs'
+
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',

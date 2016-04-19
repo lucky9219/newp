@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404,redirect
 from django.http import HttpResponseRedirect, HttpResponse,Http404
 from django.contrib import auth
 from django.contrib.auth import authenticate,login,logout
@@ -8,7 +8,8 @@ from django.db.models.query_utils import Q
 from models import *
 from django.template import RequestContext
 from django.core.mail import send_mail
-import hashlib, datetime, random
+import hashlib, random
+#from datetime import datetime
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -25,11 +26,7 @@ from django.contrib.auth import get_user_model
 def main_page(request):
 	new_s=news.objects.all()
 	top=top_n.objects.all()
-	variables = RequestContext(request, {
-    'new_s': new_s,
-    'top':top,
-    'user':request.user
-  	})
+	variables = RequestContext(request,{'new_s': new_s,'top':top,'user':request.user})
 	return render_to_response('main_page.html', variables)
 
 def register_user(request):
@@ -264,3 +261,8 @@ def dis_user(request,id):
   return render_to_response('dis1.html',variables)
 
 
+def delet(request,id):
+  obj=news.objects.get(id=id)
+  obj.delete()
+  messages.success(request,'successfully deleted')
+  return redirect("home")

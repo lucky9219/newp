@@ -23,10 +23,10 @@
                             {{var.content}}
                         </h3>
                     </a>
-
                     <p class="post-meta">Posted by <a href="/user">{{var.user}} </a>{{ time}}</p>
                     
-                </div>
+                {% load disqus_tags %}
+                {% disqus_show_comments %}
             </div>
         </div>
     </div>
