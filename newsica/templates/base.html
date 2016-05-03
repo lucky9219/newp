@@ -37,7 +37,7 @@
 <style>
 .container-fluid { background-color: rgb(35,47,62);}
 </style>
-
+{% block head_extra %}{% endblock head_extra %}
 
 </head>
 
@@ -87,15 +87,15 @@
                         <a href="contact.html">Contact</a>
                     </li>
                     {%else%}
-
                     <li>
-                        <a href="/">Home</a>
-                    </li>
-                    <li>
-                        <a href="/login">SignIn</a>
-                    </li>
-                    <li>
-                        <a href="contact.html">Contact</a>
+                    <form class='navbar-form navbar-right' method='POST' action='/login/'>{%csrf_token %}
+                        <div class= 'form-group'>
+                            <input type='text' class='form-control' name='username' placeholder='Username'/>
+                        </div>
+                        <div class='form-group'>
+                            <input type='password' class='form-control' name='password' placeholder='Password'/>
+                        </div>
+                        <button type='submit' class='btn-sm btn-primary'>SignIn</button>
                     </li>
                  {%endif%}
                 </ul>

@@ -2,10 +2,35 @@
 {%block title%}User Login{%endblock%}
 {%block head %}User Login{%endblock%} 
 
-{% block content %}            -->
-	<form  style="text-align:center;" class="form-signup" action="." method="post">
-	 <br>
-	 <p>
+{% block content %} 
+<br>
+<br>
+	<div class="col-sm-6 col-md-3"></div>
+
+<div class="col-sm-6 col-md-6">
+	{% if form.errors %}
+	<p>Either your username password didn't match Or you are not registered</p>
+{% endif %}
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="Username" class="sr-only">Username</label>
+        <input type="text" class="form-control" name='username' placeholder="Username" autofocus required/>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name='password' class="form-control" placeholder="Password" required>       
+        <div class="row">
+        	<div class="col-sm-6 col-md-3">
+        	<button type="submit" class="btn btn-primary">SignIn</button>
+        </div>
+    </div>
+      </form>
+
+{%endblock%}
+
+
+
+
+
+<p>
 {% if messages %}
 <ul class="a">
 {% for message in messages %}
@@ -14,27 +39,3 @@
  </ul>
 {% endif %}
 </p>
-	 {% if form.errors %}
-		<p>Either your username password didn't match Or you are not registered</p>
-	{% endif %}
-	 {% csrf_token %}
-	 <br>
-	 <br>
-
-	<p><label for="id_username">Username:</label>
-	{{form.username}}</p>
-	<p><label for="id_password">Password:</label>
-	{{form.password}}</p>
-	<input type="hidden" name="next" value="/"/>
-	<input type="submit"  value="Signin"><br>
-<a href="/signup">Signup</a><br>
-{%if user.is_authenticated%}
-	<a href="/reset">Reset your password</a>
-{%else%}
-<a href="/reset">Forget your password</a>
-{%endif%}
-</form>
-
-{%endblock%}
-
-

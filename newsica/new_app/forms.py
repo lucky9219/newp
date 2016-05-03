@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-
+from pagedown.widgets import PagedownWidget
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'placeholder': 'E-mail address'}))
     first_name = forms.CharField(required=True)
@@ -33,10 +33,7 @@ class save_news(forms.Form):
         widget=forms.TextInput(attrs={'size':64},
             )
         )
-    content=forms.CharField(
-        label='news',
-        widget=forms.Textarea(attrs={'size':64})
-        )
+    content=forms.CharField(widget=PagedownWidget)
     tags=forms.CharField(
         label='tags',
         required=True,

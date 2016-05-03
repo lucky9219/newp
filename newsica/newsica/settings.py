@@ -40,8 +40,11 @@ INSTALLED_APPS = (
     'haystack',
     'whoosh',
     'disqus',
+    'crispy_forms',
     'django.contrib.sites',
     'social.apps.django_app.default',
+    'pagedown'
+
 )
 DISQUS_API_KEY = 'bl10nkOgzB43y5RcGu3dJqBwa0rHHWoW4ioVoFH39DNgbvRK95iCjyz5uaVpNaoM'
 DISQUS_WEBSITE_SHORTNAME = 'newsica'
@@ -148,3 +151,4 @@ STATIC_URL = '/static/'
 MEDIA_ROOT=  '/home/lucky/github/np/newp/newsica/static/img/usruploads'
 MEDIA_URL='/media/'
 STATICFILES_DIRS=[BASE_DIR+"/static/"]
+CRISPY_TEMPLATE_PACK='bootstrap3'

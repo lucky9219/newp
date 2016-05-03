@@ -18,7 +18,7 @@
                 <div class="post-preview">
                     <h2 class="post-title">
                         <div class="w3-container w3-light-grey w3-border">
-                           <a href="/dis{{vars.get_absolute_url}}">{{var.title}}</a>
+                           <a href="/dis{{vars.get_absolute_url}}">{{var.title|safe}}</a>
                        </div>
                         </h2>
                      
@@ -26,7 +26,7 @@
                            {%if var.upload %}
                             <a  href="{{ var.upload.url }}" ><img src="{{ var.upload.url }}" class="img-thumbnail" width="304" height="236"></a>
                             {%endif%}
-                            {{var.content}}
+                            {{var.content|safe}}
                         
 {% load disqus_tags %}
 {% disqus_show_comments %}

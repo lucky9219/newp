@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}Confirm_delet{% endblock %}
 
 {%block content%}
 <style>
@@ -13,10 +13,14 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-preview">
-                    <h2 class="post-title">
-                           {{var.title|safe}}
+                        <form method="POST" action=".">{% csrf_token %}
+                        <h2 class="post-title">
+                           Do you want to delet the<br><li> "{{var.title|safe}}"</li>
                         </h2>
-                        <h3 class="post-subtitle">
+                        <input type="submit" value="confirm" class="btn btn-primany">
+                        <a href='/dis{{var.get_absolute_url}}' class='btn btn-default'>Cancel</a>
+                        </form> 
+                        <!-- <h3 class="post-subtitle">
                            {%if var.upload %}
                             <a  href="{{ vars.upload.url }}" ><img src="{{ vars.upload.url }}" class="img-thumbnail" width="304" height="236"></a>
                             {%endif%}
@@ -29,6 +33,6 @@
                 {% disqus_show_comments %}
             </div>
         </div>
-    </div>
+    </div> -->
 {%endif%}
 {%endblock%}

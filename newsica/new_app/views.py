@@ -9,7 +9,6 @@ from models import *
 from django.template import RequestContext
 from django.core.mail import send_mail
 import hashlib, random
-#from datetime import datetime
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -139,6 +138,7 @@ def save_news_page(request):
     form = save_news()
   variables = RequestContext(request, {'form': form})
   return render_to_response('save_news.html', variables)
+
 @login_required
 def newss(request):
     var=user_news.objects.all()
@@ -262,7 +262,12 @@ def dis_user(request,id):
 
 
 def delet(request,id):
-  obj=news.objects.get(id=id)
-  obj.delete()
-  messages.success(request,'successfully deleted')
-  return redirect("home")
+  var=user_news.objects.get(id=id)
+  if var.user!=request.user:
+    raise Http404("you don't have permission to delete this")
+  if request.method=="POST":
+    var.delete()
+    return HttpResponseRedirect('/')
+    messages.success(request, "successfully deleted")
+  variables=RequestContext(request,{'var':var})
+  return render_to_response("confirm_delet.html",variables)

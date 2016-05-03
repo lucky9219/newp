@@ -18,16 +18,15 @@
                 <div class="post-preview">
                     <h2 class="post-title">
                         <ul class="w3-ul w3-card-4" style="width:100%">
-                         <li>  <a href="/dis{{vars.get_absolute_url}}">{{vars.title}}</a></li>
+                         <li>  <a href="/dis{{vars.get_absolute_url}}">{{vars.title|safe}}</a></li>
+
+                            
                         </h2>
                      
-                       <!--  <h3 class="post-subtitle">
-                           {%if vars.upload %}
-                            <a  href="{{ vars.upload.url }}" ><img src="{{ vars.upload.url }}" class="img-thumbnail" width="304" height="236"></a>
-                            {%endif%}
-                            {{vars.content}}
+                        <h3 class="post-subtitle">
+                          <li> <a href="{{vars.get_absolute_url}}del/">Delete</a> </li>
                         </h3>
-                    </a> -->
+                    </a>
 
                     <p class="post-meta">Posted by <a href="/user/{{vars.user}}/">{{vars.user}} </a>{{ time}}</p>
                     
